@@ -4,7 +4,7 @@
   "description": "Professional API using Clean Architecture and TDD",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf dist && tsc"
   },
   "keywords": [
     "clean architecture",
@@ -25,6 +25,7 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "rimraf": "^5.0.5",
     "typescript": "^5.4.5"
   },
   "engines": {
