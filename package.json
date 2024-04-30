@@ -23,5 +23,11 @@
     "email": "rayan.rmw@gmail.com",
     "url": "https://rmanguinho.github.io"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": "20.x"
+  }
 }
