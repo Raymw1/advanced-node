@@ -16,5 +16,5 @@
     },
     "strict": true,                                      /* Enable all strict type-checking options. */
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
