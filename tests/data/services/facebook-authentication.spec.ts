@@ -55,6 +55,12 @@ describe('FacebookAuthenticationService', () => {
     expect(userAccountRepository.load).toHaveBeenCalledTimes(1)
   })
 
+  it('should rethrow if LoadUserAccountRepository throws', async () => {
+    userAccountRepository.load.mockRejectedValueOnce(new Error(('load_error')))
+    const promise = sut.perform({ token })
+    await expect(promise).rejects.toThrow(new Error('load_error'))
+  })
+
   it('should call SaveFacebookAccountRepository with FacebookAccount', async () => {
     const FacebookAccountStub = jest.fn().mockImplementation(() => ({ any: 'any' }))
     jest.mocked(FacebookAccount).mockImplementation(FacebookAccountStub)
