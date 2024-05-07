@@ -69,6 +69,12 @@ describe('FacebookAuthenticationService', () => {
     expect(userAccountRepository.saveWithFacebook).toHaveBeenCalledTimes(1)
   })
 
+  it('should rethrow if SaveFacebookAccountRepository throws', async () => {
+    userAccountRepository.saveWithFacebook.mockRejectedValueOnce(new Error(('save_error')))
+    const promise = sut.perform({ token })
+    await expect(promise).rejects.toThrow(new Error('save_error'))
+  })
+
   it('should call TokenGenerator with correct params', async () => {
     await sut.perform({ token })
     expect(crypto.generateToken).toHaveBeenCalledWith({
