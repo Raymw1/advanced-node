@@ -84,6 +84,12 @@ describe('FacebookAuthenticationService', () => {
     expect(crypto.generateToken).toHaveBeenCalledTimes(1)
   })
 
+  it('should rethrow if TokenGenerator throws', async () => {
+    crypto.generateToken.mockRejectedValueOnce(new Error(('token_error')))
+    const promise = sut.perform({ token })
+    await expect(promise).rejects.toThrow(new Error('token_error'))
+  })
+
   it('should return an AccessToken on success', async () => {
     const accessToken = await sut.perform({ token })
     expect(accessToken).toEqual(new AccessToken('any_generated_token'))
