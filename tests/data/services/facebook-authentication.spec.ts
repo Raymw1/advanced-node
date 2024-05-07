@@ -37,6 +37,12 @@ describe('FacebookAuthenticationService', () => {
     expect(facebookApi.loadUser).toHaveBeenCalledTimes(1)
   })
 
+  it('should rethrow if LoadFacebookUserApi throws', async () => {
+    facebookApi.loadUser.mockRejectedValueOnce(new Error(('fb_error')))
+    const promise = sut.perform({ token })
+    await expect(promise).rejects.toThrow(new Error('fb_error'))
+  })
+
   it('should return AuthenticationError when LoadFacebookUserApi returns undefined', async () => {
     facebookApi.loadUser.mockResolvedValueOnce(undefined)
     const authResult = await sut.perform({ token })
