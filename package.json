@@ -32,6 +32,7 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/jest": "^29.5.12",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^20.12.7",
@@ -54,6 +55,7 @@
     "node": "20.x"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "module-alias": "^2.2.3"
   }
 }
