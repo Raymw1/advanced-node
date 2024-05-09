@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" pages="1">
     <diagram id="xk0LYboaFIT9QmwzVqD-" name="Page-1">
-        <mxGraphModel dx="2401" dy="2100" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#282A36" math="0" shadow="0">
+        <mxGraphModel dx="2164" dy="1839" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#282A36" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -121,34 +121,58 @@
                 <mxCell id="132" value="FacebookAccount" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#FF79C6;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
                     <mxGeometry x="-340" y="159.5" width="104" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="137" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#50FA7B;strokeWidth=3;fillColor=#2E303D;fontColor=#F8F8F2;" vertex="1" parent="1">
-                    <mxGeometry x="-441" y="-457" width="938" height="240" as="geometry"/>
+                <mxCell id="137" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#50FA7B;strokeWidth=3;fillColor=#2E303D;fontColor=#F8F8F2;" parent="1" vertex="1">
+                    <mxGeometry x="-441" y="-469" width="938" height="240" as="geometry"/>
                 </mxCell>
-                <mxCell id="138" value="Data" style="text;html=1;resizable=0;points=[];autosize=1;align=right;verticalAlign=bottom;spacingTop=-4;fontColor=#F8F8F2;fontSize=13;" vertex="1" parent="1">
+                <mxCell id="138" value="Data" style="text;html=1;resizable=0;points=[];autosize=1;align=right;verticalAlign=bottom;spacingTop=-4;fontColor=#F8F8F2;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="454" y="-196" width="45" height="22" as="geometry"/>
                 </mxCell>
-                <mxCell id="139" value="Infra" style="text;html=1;resizable=0;points=[];autosize=1;align=right;verticalAlign=bottom;spacingTop=-4;fontColor=#F8F8F2;fontSize=13;" vertex="1" parent="1">
+                <mxCell id="139" value="Infra" style="text;html=1;resizable=0;points=[];autosize=1;align=right;verticalAlign=bottom;spacingTop=-4;fontColor=#F8F8F2;fontSize=13;" parent="1" vertex="1">
                     <mxGeometry x="455" y="-487" width="44" height="22" as="geometry"/>
                 </mxCell>
-                <mxCell id="142" style="edgeStyle=none;html=1;dashed=1;strokeColor=none;strokeWidth=2;dashPattern=8 8;" edge="1" parent="1" source="140" target="123">
+                <mxCell id="142" style="edgeStyle=none;html=1;dashed=1;strokeColor=none;strokeWidth=2;dashPattern=8 8;" parent="1" source="140" target="123" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="143" style="edgeStyle=none;html=1;dashed=1;strokeWidth=2;strokeColor=#8be9fd;" edge="1" parent="1" source="140">
+                <mxCell id="143" style="edgeStyle=none;html=1;dashed=1;strokeWidth=2;strokeColor=#8be9fd;" parent="1" source="140" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="-63" y="-135.37497384207586" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="145" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#8be9fd;strokeWidth=2;" edge="1" parent="1" source="140" target="144">
+                <mxCell id="145" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#8be9fd;strokeWidth=2;" parent="1" source="140" target="144" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="140" value="FacebookApi&lt;br&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#8be9fd;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" vertex="1" parent="1">
+                <mxCell id="140" value="FacebookApi&lt;br&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#8be9fd;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
                     <mxGeometry x="-156" y="-334" width="186" height="76" as="geometry"/>
                 </mxCell>
-                <mxCell id="141" style="edgeStyle=none;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="140" target="140">
+                <mxCell id="141" style="edgeStyle=none;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" parent="1" source="140" target="140" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="144" value="HttpGetClient" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#bd93f9;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" vertex="1" parent="1">
+                <mxCell id="144" value="HttpGetClient" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#bd93f9;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
                     <mxGeometry x="-156" y="-445" width="186" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="147" style="edgeStyle=none;html=1;dashed=1;strokeColor=#8be9fd;strokeWidth=2;" edge="1" parent="1" source="146" target="144">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="149" style="edgeStyle=none;html=1;strokeColor=#8be9fd;strokeWidth=2;" edge="1" parent="1" source="146" target="148">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="146" value="AxiosHttpClient" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#8be9fd;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" vertex="1" parent="1">
+                    <mxGeometry x="94.5" y="-445" width="186" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="148" value="AxiosHttpClient" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#ff5555;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" vertex="1" parent="1">
+                    <mxGeometry x="94.5" y="-578" width="186" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="151" style="edgeStyle=none;html=1;strokeColor=#8be9fd;strokeWidth=2;dashed=1;" edge="1" parent="1" source="150" target="122">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="153" style="edgeStyle=none;html=1;strokeColor=#8be9fd;strokeWidth=2;" edge="1" parent="1" source="150" target="152">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="150" value="JwtTokenGenerator" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#8be9fd;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" vertex="1" parent="1">
+                    <mxGeometry x="-381" y="-334" width="186" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="152" value="JsonWebToken" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#ff5555;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" vertex="1" parent="1">
+                    <mxGeometry x="-651" y="-334" width="186" height="76" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
