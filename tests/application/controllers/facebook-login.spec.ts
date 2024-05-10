@@ -1,4 +1,4 @@
-import { FacebookLoginController } from '@/application/controllers'
+import { FacebookLoginController, ServerError } from '@/application/controllers'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 import { AccessToken } from '@/domain/models'
@@ -50,6 +50,17 @@ describe('FacebookLoginController', () => {
 
     expect(facebookAuthentication.perform).toHaveBeenCalledWith({ token: 'any_token' })
     expect(facebookAuthentication.perform).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return 500 if FacebookAuthentication throws', async () => {
+    const error = new Error('infra_error')
+    facebookAuthentication.perform.mockRejectedValueOnce(error)
+    const httpResponse = await sut.handle({ token: 'any_token' })
+
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      data: new ServerError(error)
+    })
   })
 
   it('should return 401 if FacebookAuthentication returns AuthenticationError', async () => {
