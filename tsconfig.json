@@ -11,8 +11,8 @@
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
     "baseUrl": "src",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {                                           /* Specify a set of entries that re-map imports to additional lookup locations. */
-      "@/*": ["*"],
       "@/tests/*": ["../tests/*"],
+      "@/*": ["*"]
     },
     "strict": true,                                      /* Enable all strict type-checking options. */
     "emitDecoratorMetadata": true,
