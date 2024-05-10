@@ -1,13 +1,7 @@
+import { ServerError } from '@/application/errors'
+import { HttpResponse } from '@/application/helpers'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
-
-export class ServerError extends Error {
-  constructor (error?: Error) {
-    super('Internal server error. Try again soon.')
-    this.name = 'ServerError'
-    this.stack = error?.stack
-  }
-}
 
 export class FacebookLoginController {
   constructor (private readonly facebookAuthentication: FacebookAuthentication) {}
@@ -40,9 +34,4 @@ export class FacebookLoginController {
       }
     }
   }
-}
-
-type HttpResponse = {
-  statusCode: number
-  data: any
 }

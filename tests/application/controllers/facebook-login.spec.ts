@@ -1,4 +1,5 @@
-import { FacebookLoginController, ServerError } from '@/application/controllers'
+import { FacebookLoginController } from '@/application/controllers'
+import { ServerError } from '@/application/errors'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 import { AccessToken } from '@/domain/models'
