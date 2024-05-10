@@ -1,3 +1,4 @@
+import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 
 export class FacebookLoginController {
@@ -11,9 +12,17 @@ export class FacebookLoginController {
       }
     }
     const result = await this.facebookAuthentication.perform({ token: httpRequest.token })
+    if (result instanceof AuthenticationError) {
+      return {
+        statusCode: 401,
+        data: result
+      }
+    }
     return {
-      statusCode: 401,
-      data: result
+      statusCode: 200,
+      data: {
+        accessToken: result.value
+      }
     }
   }
 }
