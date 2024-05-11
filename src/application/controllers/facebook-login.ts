@@ -1,5 +1,5 @@
 import { RequiredFieldError } from '@/application/errors'
-import { HttpResponse, badRequest, serverError, unauthorized } from '@/application/helpers'
+import { HttpResponse, badRequest, ok, serverError, unauthorized } from '@/application/helpers'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 
@@ -15,12 +15,7 @@ export class FacebookLoginController {
       if (result instanceof AuthenticationError) {
         return unauthorized()
       }
-      return {
-        statusCode: 200,
-        data: {
-          accessToken: result.value
-        }
-      }
+      return ok({ accessToken: result.value })
     } catch (error) {
       return serverError(error instanceof Error ? error : undefined)
     }
