@@ -1,5 +1,6 @@
-import { HttpResponse, badRequest, ok, serverError, unauthorized } from '@/application/helpers'
-import { ValidationBuilder, ValidationComposite } from '@/application/validation'
+import { Controller } from '@/application/controllers'
+import { HttpResponse, ok, unauthorized } from '@/application/helpers'
+import { ValidationBuilder, Validator } from '@/application/validation'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 
@@ -11,28 +12,22 @@ type Model = {
   accessToken: string
 } | Error
 
-export class FacebookLoginController {
-  constructor (private readonly facebookAuthentication: FacebookAuthentication) {}
-
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
-    try {
-      const validationError = this.validate(httpRequest)
-      if (validationError !== undefined) {
-        return badRequest(validationError)
-      }
-      const result = await this.facebookAuthentication.perform({ token: httpRequest.token })
-      if (result instanceof AuthenticationError) {
-        return unauthorized()
-      }
-      return ok({ accessToken: result.value })
-    } catch (error) {
-      return serverError(error instanceof Error ? error : undefined)
-    }
+export class FacebookLoginController extends Controller {
+  constructor (private readonly facebookAuthentication: FacebookAuthentication) {
+    super()
   }
 
-  private validate (httpRequest: HttpRequest): Error | undefined {
-    return new ValidationComposite([
+  async perform (httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
+    const result = await this.facebookAuthentication.perform({ token: httpRequest.token })
+    if (result instanceof AuthenticationError) {
+      return unauthorized()
+    }
+    return ok({ accessToken: result.value })
+  }
+
+  override buildValidators (httpRequest: HttpRequest): Validator[] {
+    return [
       ...ValidationBuilder.of({ value: httpRequest.token, fieldName: 'token' }).required().build()
-    ]).validate()
+    ]
   }
 }
