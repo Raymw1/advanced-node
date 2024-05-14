@@ -25,6 +25,7 @@ describe('FacebookApi', () => {
 
   it('should get app token', async () => {
     await sut.loadUser({ token: 'any_client_token' })
+
     expect(httpClient.get).toHaveBeenCalledWith({
       url: 'https://graph.facebook.com/oauth/access_token',
       params: {
@@ -37,6 +38,7 @@ describe('FacebookApi', () => {
 
   it('should get debug token', async () => {
     await sut.loadUser({ token: 'any_client_token' })
+
     expect(httpClient.get).toHaveBeenCalledWith({
       url: 'https://graph.facebook.com/oauth/debug_token',
       params: {
@@ -48,6 +50,7 @@ describe('FacebookApi', () => {
 
   it('should get user info', async () => {
     await sut.loadUser({ token: 'any_client_token' })
+
     expect(httpClient.get).toHaveBeenCalledWith({
       url: 'https://graph.facebook.com/any_user_id',
       params: {
@@ -57,8 +60,16 @@ describe('FacebookApi', () => {
     })
   })
 
+  it('should return undefined if HttpGetClient throws', async () => {
+    httpClient.get.mockReset().mockRejectedValueOnce(new Error('fb_error'))
+    const fbUser = await sut.loadUser({ token: 'any_client_token' })
+
+    expect(fbUser).toBeUndefined()
+  })
+
   it('should return facebook user', async () => {
     const fbUser = await sut.loadUser({ token: 'any_client_token' })
+
     expect(fbUser).toEqual({
       facebookId: 'any_fb_id',
       name: 'any_fb_name',
