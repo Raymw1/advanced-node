@@ -3,10 +3,15 @@ import { AxiosHttpClient } from '@/infra/http'
 import { env } from '@/main/config/env'
 
 describe('Facebook Api Integration Tests', () => {
-  it('should return a Facebook User if token is valid', async () => {
-    const axiosHttpClient = new AxiosHttpClient()
-    const sut = new FacebookApi(axiosHttpClient, env.facebookApi.clientId, env.facebookApi.clientSecret)
+  let axiosHttpClient: AxiosHttpClient
+  let sut: FacebookApi
 
+  beforeEach(() => {
+    axiosHttpClient = new AxiosHttpClient()
+    sut = new FacebookApi(axiosHttpClient, env.facebookApi.clientId, env.facebookApi.clientSecret)
+  })
+
+  it('should return a Facebook User if token is valid', async () => {
     const fbUser = await sut.loadUser({ token: 'any_token' })
 
     expect(fbUser).toEqual({
@@ -17,9 +22,6 @@ describe('Facebook Api Integration Tests', () => {
   })
 
   it('should return undefined if token is invalid', async () => {
-    const axiosHttpClient = new AxiosHttpClient()
-    const sut = new FacebookApi(axiosHttpClient, env.facebookApi.clientId, env.facebookApi.clientSecret)
-
     const fbUser = await sut.loadUser({ token: 'invalid_token' })
 
     expect(fbUser).toBeUndefined()
