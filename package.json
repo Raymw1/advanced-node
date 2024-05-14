@@ -4,6 +4,7 @@
   "description": "Professional API using Clean Architecture and TDD",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
@@ -34,6 +35,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/module-alias": "^2.0.4",
@@ -59,6 +62,8 @@
   },
   "dependencies": {
     "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "pg": "^8.11.5",
