@@ -45,4 +45,18 @@ describe('ExpressRouter', () => {
     expect(httpResponse.json).toHaveBeenCalledWith({ data: 'any_data' })
     expect(httpResponse.json).toHaveBeenCalledTimes(1)
   })
+
+  it('should respond with 400 and valid error', async () => {
+    controller.handle.mockResolvedValue({
+      statusCode: 400,
+      data: new Error('controller_error')
+    })
+
+    await sut.adapt(httpRequest, httpResponse)
+
+    expect(httpResponse.status).toHaveBeenCalledWith(400)
+    expect(httpResponse.status).toHaveBeenCalledTimes(1)
+    expect(httpResponse.json).toHaveBeenCalledWith({ error: 'controller_error' })
+    expect(httpResponse.json).toHaveBeenCalledTimes(1)
+  })
 })
