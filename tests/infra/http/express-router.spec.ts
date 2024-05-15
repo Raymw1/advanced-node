@@ -1,15 +1,23 @@
 import { Controller } from '@/application/controllers'
 import { ExpressRouter } from '@/infra/http'
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { mock } from 'jest-mock-extended'
+import { Request, Response } from 'express'
+import { MockProxy, mock } from 'jest-mock-extended'
 
 describe('ExpressRouter', () => {
-  it('should call handle with correct request', async () => {
-    const httpRequest = getMockReq({ body: { any: 'any' } })
-    const { res: httpResponse } = getMockRes()
-    const controller = mock<Controller>()
-    const sut = new ExpressRouter(controller)
+  let httpRequest: Request
+  let httpResponse: Response
+  let controller: MockProxy<Controller>
+  let sut: ExpressRouter
 
+  beforeEach(() => {
+    httpRequest = getMockReq({ body: { any: 'any' } })
+    httpResponse = getMockRes().res
+    controller = mock<Controller>()
+    sut = new ExpressRouter(controller)
+  })
+
+  it('should call handle with correct request', async () => {
     await sut.adapt(httpRequest, httpResponse)
 
     expect(controller.handle).toHaveBeenCalledWith({ any: 'any' })
@@ -17,9 +25,6 @@ describe('ExpressRouter', () => {
 
   it('should call handle with empty request', async () => {
     const httpRequest = getMockReq()
-    const { res: httpResponse } = getMockRes()
-    const controller = mock<Controller>()
-    const sut = new ExpressRouter(controller)
 
     await sut.adapt(httpRequest, httpResponse)
 
