@@ -14,6 +14,10 @@ describe('ExpressRouter', () => {
     httpRequest = getMockReq({ body: { any: 'any' } })
     httpResponse = getMockRes().res
     controller = mock<Controller>()
+    controller.handle.mockResolvedValue({
+      statusCode: 200,
+      data: { data: 'any_data' }
+    })
     sut = new ExpressRouter(controller)
   })
 
@@ -21,6 +25,7 @@ describe('ExpressRouter', () => {
     await sut.adapt(httpRequest, httpResponse)
 
     expect(controller.handle).toHaveBeenCalledWith({ any: 'any' })
+    expect(controller.handle).toHaveBeenCalledTimes(1)
   })
 
   it('should call handle with empty request', async () => {
@@ -29,5 +34,15 @@ describe('ExpressRouter', () => {
     await sut.adapt(httpRequest, httpResponse)
 
     expect(controller.handle).toHaveBeenCalledWith({})
+    expect(controller.handle).toHaveBeenCalledTimes(1)
+  })
+
+  it('should respond with 200 and valid data', async () => {
+    await sut.adapt(httpRequest, httpResponse)
+
+    expect(httpResponse.status).toHaveBeenCalledWith(200)
+    expect(httpResponse.status).toHaveBeenCalledTimes(1)
+    expect(httpResponse.json).toHaveBeenCalledWith({ data: 'any_data' })
+    expect(httpResponse.json).toHaveBeenCalledTimes(1)
   })
 })
