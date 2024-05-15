@@ -5,6 +5,7 @@ export class ExpressRouter {
   constructor (private readonly controller: Controller) {}
 
   async adapt (httpRequest: Request, httpResponse: Response): Promise<void> {
-    await this.controller.handle({ ...httpRequest.body })
+    const response = await this.controller.handle({ ...httpRequest.body })
+    httpResponse.status(200).json(response.data)
   }
 }
