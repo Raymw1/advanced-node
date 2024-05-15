@@ -6,6 +6,10 @@ export class ExpressRouter {
 
   async adapt (httpRequest: Request, httpResponse: Response): Promise<void> {
     const response = await this.controller.handle({ ...httpRequest.body })
-    httpResponse.status(200).json(response.data)
+    if (response.statusCode === 200) {
+      httpResponse.status(200).json(response.data)
+    } else {
+      httpResponse.status(response.statusCode).json({ error: response.data.message })
+    }
   }
 }
