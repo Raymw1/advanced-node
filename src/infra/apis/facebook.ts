@@ -9,6 +9,9 @@ type UserInfo = {
   email: string
 }
 
+type LoadUserParams = LoadFacebookUserApi.Params
+type LoadUserResult = LoadFacebookUserApi.Result
+
 export class FacebookApi implements LoadFacebookUserApi {
   private readonly baseUrl = 'https://graph.facebook.com'
 
@@ -18,10 +21,10 @@ export class FacebookApi implements LoadFacebookUserApi {
     private readonly clientSecret: string
   ) {}
 
-  async loadUser (params: LoadFacebookUserApi.Params): Promise<LoadFacebookUserApi.Result> {
+  async loadUser ({ token }: LoadUserParams): Promise<LoadUserResult> {
     try {
-      const { id, name, email } = await this.getUserInfo(params.token)
-      return { facebookId: id, name: name, email: email }
+      const { id, name, email } = await this.getUserInfo(token)
+      return { facebookId: id, name, email }
     } catch (error) {
       return undefined
     }

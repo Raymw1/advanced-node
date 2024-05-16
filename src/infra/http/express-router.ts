@@ -3,11 +3,8 @@ import { RequestHandler } from 'express'
 
 export const adaptExpressRoute = (controller: Controller): RequestHandler => {
   return async (httpRequest, httpResponse) => {
-    const response = await controller.handle({ ...httpRequest.body })
-    if (response.statusCode === 200) {
-      httpResponse.status(200).json(response.data)
-    } else {
-      httpResponse.status(response.statusCode).json({ error: response.data.message })
-    }
+    const { statusCode, data } = await controller.handle({ ...httpRequest.body })
+    const json = statusCode === 200 ? data : { error: data.message }
+    httpResponse.status(statusCode).json(json)
   }
 }
