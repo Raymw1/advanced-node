@@ -40,7 +40,7 @@ describe('FacebookApi', () => {
     await sut.loadUser({ token: 'any_client_token' })
 
     expect(httpClient.get).toHaveBeenCalledWith({
-      url: 'https://graph.facebook.com/oauth/debug_token',
+      url: 'https://graph.facebook.com/debug_token',
       params: {
         access_token: 'any_app_token',
         input_token: 'any_client_token'
@@ -52,7 +52,7 @@ describe('FacebookApi', () => {
     await sut.loadUser({ token: 'any_client_token' })
 
     expect(httpClient.get).toHaveBeenCalledWith({
-      url: 'https://graph.facebook.com/any_user_id',
+      url: 'https://graph.facebook.com/v19.0/any_user_id',
       params: {
         fields: 'id,name,email',
         access_token: 'any_client_token'
