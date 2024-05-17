@@ -1,26 +1,24 @@
 import { LoadFacebookUserApi } from '@/data/contracts/apis'
 import { TokenGenerator } from '@/data/contracts/crypto'
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/data/contracts/repos'
-import { AuthenticationError } from '@/domain/errors'
-import { FacebookAuthentication } from '@/domain/features'
 import { AccessToken, FacebookAccount } from '@/domain/entities'
+import { AuthenticationError } from '@/domain/errors'
 
-export class FacebookAuthenticationUseCase implements FacebookAuthentication {
-  constructor (
-    private readonly facebookApi: LoadFacebookUserApi,
-    private readonly userAccountRepository: LoadUserAccountRepository & SaveFacebookAccountRepository,
-    private readonly crypto: TokenGenerator
-  ) {}
+type Setup = (
+  facebookApi: Readonly<LoadFacebookUserApi>,
+  userAccountRepository: Readonly<LoadUserAccountRepository & SaveFacebookAccountRepository>,
+  crypto: Readonly<TokenGenerator>
+) => FacebookAuthentication
+export type FacebookAuthentication = (params: { token: string }) => Promise<AccessToken | AuthenticationError>
 
-  async perform (params: FacebookAuthentication.Params): Promise<FacebookAuthentication.Result> {
-    const fbData = await this.facebookApi.loadUser(params)
-    if (fbData !== undefined) {
-      const accountData = await this.userAccountRepository.load({ email: fbData.email })
-      const fbAccount = new FacebookAccount(fbData, accountData)
-      const { id } = await this.userAccountRepository.saveWithFacebook(fbAccount)
-      const token = await this.crypto.generateToken({ key: id, expirationInMs: AccessToken.expirationInMs })
-      return new AccessToken(token)
-    }
-    return new AuthenticationError()
+export const setupFacebookAuthentication: Setup = (facebookApi, userAccountRepository, crypto) => async (params) => {
+  const fbData = await facebookApi.loadUser(params)
+  if (fbData !== undefined) {
+    const accountData = await userAccountRepository.load({ email: fbData.email })
+    const fbAccount = new FacebookAccount(fbData, accountData)
+    const { id } = await userAccountRepository.saveWithFacebook(fbAccount)
+    const token = await crypto.generateToken({ key: id, expirationInMs: AccessToken.expirationInMs })
+    return new AccessToken(token)
   }
+  return new AuthenticationError()
 }
