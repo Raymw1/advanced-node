@@ -33,6 +33,7 @@ describe('JwtTokenHandler', () => {
     it('should call sign with correct params', async () => {
       await sut.generateToken({ key, expirationInMs })
 
+      expect(fakeJwt.sign).toHaveBeenCalledTimes(1)
       expect(fakeJwt.sign).toHaveBeenCalledWith({ key }, secret, { expiresIn: 1 })
     })
 
@@ -48,6 +49,20 @@ describe('JwtTokenHandler', () => {
       const generatedToken = await sut.generateToken({ key, expirationInMs })
 
       expect(generatedToken).toBe(token)
+    })
+  })
+
+  describe('validateToken', () => {
+    let token: string
+
+    beforeAll(() => {
+      token = 'any_token'
+    })
+
+    it('should call verify with correct params', async () => {
+      await sut.validateToken({ token })
+
+      expect(fakeJwt.verify).toHaveBeenCalledWith(token, secret)
     })
   })
 })
