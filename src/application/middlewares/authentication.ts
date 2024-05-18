@@ -7,7 +7,11 @@ export class AuthenticationMiddleware {
   constructor (private readonly authorize: Authorize) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse<Error>> {
-    await this.authorize({ token: httpRequest.authorization })
-    return forbidden()
+    try {
+      await this.authorize({ token: httpRequest.authorization })
+      return forbidden()
+    } catch (error) {
+      return forbidden()
+    }
   }
 }
