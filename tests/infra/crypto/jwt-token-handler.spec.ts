@@ -76,6 +76,14 @@ describe('JwtTokenHandler', () => {
       await expect(promise).rejects.toThrow(new Error('verify_error'))
     })
 
+    it('should throw if verify returns null', async () => {
+      fakeJwt.verify.mockImplementationOnce(() => null)
+
+      const promise = sut.validateToken({ token })
+
+      await expect(promise).rejects.toThrow()
+    })
+
     it('should return the key used to sign', async () => {
       const generatedKey = await sut.validateToken({ token })
 
