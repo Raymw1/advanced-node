@@ -2,10 +2,17 @@ import { ForbiddenError } from '@/application/errors'
 import { AuthenticationMiddleware } from '@/application/middlewares'
 
 describe('AuthenticationMiddleware', () => {
+  let authorization: string
+  let authorize: jest.Mock
   let sut: AuthenticationMiddleware
 
+  beforeAll(() => {
+    authorization = 'any_authorization_token'
+    authorize = jest.fn()
+  })
+
   beforeEach(() => {
-    sut = new AuthenticationMiddleware()
+    sut = new AuthenticationMiddleware(authorize)
   })
 
   it('should return 403 if authorization is empty', async () => {
@@ -33,5 +40,12 @@ describe('AuthenticationMiddleware', () => {
       statusCode: 403,
       data: new ForbiddenError()
     })
+  })
+
+  it('should call Authorize with correct input', async () => {
+    await sut.handle({ authorization })
+
+    expect(authorize).toHaveBeenCalledTimes(1)
+    expect(authorize).toHaveBeenCalledWith({ token: authorization })
   })
 })
