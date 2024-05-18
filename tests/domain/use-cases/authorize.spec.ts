@@ -11,6 +11,7 @@ describe('Authorize', () => {
   beforeAll(() => {
     token = 'any_token'
     crypto = mock<TokenValidator>()
+    crypto.validateToken.mockResolvedValue('any_id')
   })
 
   beforeEach(() => {
@@ -22,5 +23,11 @@ describe('Authorize', () => {
 
     expect(crypto.validateToken).toHaveBeenCalledTimes(1)
     expect(crypto.validateToken).toHaveBeenCalledWith({ token })
+  })
+
+  it('should return the user id of valid accessToken', async () => {
+    const { userId } = await sut({ token })
+
+    expect(userId).toBe('any_id')
   })
 })
