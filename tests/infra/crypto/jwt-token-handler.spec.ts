@@ -68,6 +68,14 @@ describe('JwtTokenHandler', () => {
       expect(fakeJwt.verify).toHaveBeenCalledWith(token, secret)
     })
 
+    it('should throw if verify throws', async () => {
+      fakeJwt.verify.mockImplementationOnce(() => { throw new Error('verify_error') })
+
+      const promise = sut.validateToken({ token })
+
+      await expect(promise).rejects.toThrow(new Error('verify_error'))
+    })
+
     it('should return the key used to sign', async () => {
       const generatedKey = await sut.validateToken({ token })
 
