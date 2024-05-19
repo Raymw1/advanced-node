@@ -23,6 +23,7 @@ describe('ExpressMiddleware', () => {
   })
 
   beforeEach(() => {
+    httpRequest.locals = undefined
     sut = adaptExpressMiddleware(middleware)
   })
 
@@ -56,10 +57,20 @@ describe('ExpressMiddleware', () => {
     expect(httpResponse.send).toHaveBeenCalledWith({ error: 'any_error' })
   })
 
-  it('should add data to httpRequest.locals', async () => {
+  it('should add valid data to httpRequest.locals', async () => {
+    middleware.handle.mockResolvedValueOnce({
+      statusCode: 200,
+      data: {
+        emptyProp: '',
+        nullProp: null,
+        undefinedProp: undefined,
+        prop: 'any_value'
+      }
+    })
+
     await sut(httpRequest, httpResponse, next)
 
-    expect(httpRequest.locals).toEqual({ data: 'any_data' })
+    expect(httpRequest.locals).toEqual({ prop: 'any_value' })
     expect(next).toHaveBeenCalledTimes(1)
   })
 })
