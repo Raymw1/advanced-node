@@ -12,7 +12,7 @@ describe('Facebook Api Integration Tests', () => {
   })
 
   it('should return a Facebook User if token is valid', async () => {
-    const fbUser = await sut.loadUser({ token: 'any_token' })
+    const fbUser = await sut.loadUser({ token: env.facebookApi.accessToken })
 
     expect(fbUser).toEqual({
       facebookId: 'any_fb_id',
