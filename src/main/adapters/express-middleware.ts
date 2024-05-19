@@ -5,5 +5,10 @@ type Adapter = (middleware: Middleware) => RequestHandler
 
 export const adaptExpressMiddleware: Adapter = (middleware) => async (httpRequest, httpResponse, next) => {
   const { statusCode, data } = await middleware.handle({ ...httpRequest.headers })
-  return httpResponse.status(statusCode).send({ error: data.message })
+  if (statusCode === 200) {
+    httpRequest.locals = { ...httpRequest.locals, ...data }
+    next()
+  } else {
+    httpResponse.status(statusCode).send({ error: data.message })
+  }
 }
