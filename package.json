@@ -4,14 +4,18 @@
   "description": "Professional API using Clean Architecture and TDD",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main",
-    "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "start": "node -r dotenv/config dist/main",
+    "dev": "ts-node-dev --respawn --transpile-only -r dotenv/config --inspect=0.0.0.0:9229 src/main",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc -p tsconfig-build.json",
+    "check": "npm-check -s -u",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:coverage": "npm test -- --coverage",
+    "test:integration": "npm test -- --config ./jest.integration.config.js",
     "test:fb-api": "npm test -- -c ./jest.integration.config.js ./tests/external/facebook-api.test.ts",
     "prepare": "husky"
   },
@@ -58,6 +62,7 @@
     "rimraf": "^5.0.5",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "4.4"
   },
   "engines": {
