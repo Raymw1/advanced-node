@@ -1,11 +1,12 @@
 import { HttpResponse, forbidden, ok } from '@/application/helpers'
+import { Middleware } from '@/application/middlewares'
+import { RequiredStringValidator } from '@/application/validation'
 import { Authorize } from '@/domain/use-cases'
-import { RequiredStringValidator } from '../validation'
 
 type HttpRequest = { authorization: string }
 type Model = { userId: string } | Error
 
-export class AuthenticationMiddleware {
+export class AuthenticationMiddleware implements Middleware {
   constructor (private readonly authorize: Authorize) {}
 
   async handle ({ authorization }: HttpRequest): Promise<HttpResponse<Model>> {
