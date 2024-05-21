@@ -41,4 +41,16 @@ describe('ChangeProfilePicture', () => {
     expect(crypto.uuid).toHaveBeenCalledTimes(1)
     expect(crypto.uuid).toHaveBeenCalledWith({ key: 'any_id' })
   })
+
+  it('should throw if UUIDGenerator throws', async () => {
+    const file = Buffer.from('any_buffer')
+    const fileStorage = mock<UploadFile>()
+    const crypto = mock<UUIDGenerator>()
+    crypto.uuid.mockImplementationOnce(() => { throw new Error('uuid_error') })
+    const sut = setupChangeProfilePicture(fileStorage, crypto)
+
+    const promise = sut({ userId: 'any_id', file })
+
+    await expect(promise).rejects.toThrow(new Error('uuid_error'))
+  })
 })
