@@ -90,7 +90,7 @@
                 <mxCell id="130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#8BE9FD;dashed=1;dashPattern=1 1;" parent="1" source="80" target="126" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="131" value="LoadFacebookUserApi" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#BD93F9;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
+                <mxCell id="131" value="LoadFacebookUser" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#BD93F9;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
                     <mxGeometry x="-191.5" y="393" width="144" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="132" value="LoadUserAccountRepo" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#BD93F9;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">

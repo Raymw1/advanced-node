@@ -1,11 +1,11 @@
-import { LoadFacebookUserApi } from '@/domain/contracts/apis'
+import { LoadFacebookUser } from '@/domain/contracts/gateways'
 import { TokenGenerator } from '@/domain/contracts/crypto'
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/domain/contracts/repos'
 import { AccessToken, FacebookAccount } from '@/domain/entities'
 import { AuthenticationError } from '@/domain/errors'
 
 type Setup = (
-  facebookApi: Readonly<LoadFacebookUserApi>,
+  facebook: Readonly<LoadFacebookUser>,
   userAccountRepository: Readonly<LoadUserAccountRepository & SaveFacebookAccountRepository>,
   crypto: Readonly<TokenGenerator>
 ) => FacebookAuthentication
@@ -13,8 +13,8 @@ type Input = { token: string }
 type Output = { accessToken: string }
 export type FacebookAuthentication = (params: Input) => Promise<Output>
 
-export const setupFacebookAuthentication: Setup = (facebookApi, userAccountRepository, crypto) => async (params) => {
-  const fbData = await facebookApi.loadUser(params)
+export const setupFacebookAuthentication: Setup = (facebook, userAccountRepository, crypto) => async (params) => {
+  const fbData = await facebook.loadUser(params)
   if (fbData === undefined) throw new AuthenticationError()
   const accountData = await userAccountRepository.load({ email: fbData.email })
   const fbAccount = new FacebookAccount(fbData, accountData)
