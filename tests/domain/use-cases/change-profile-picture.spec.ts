@@ -18,6 +18,18 @@ describe('ChangeProfilePicture', () => {
     expect(fileStorage.upload).toHaveBeenCalledWith({ file, key: uuid })
   })
 
+  it('should throw if UploadFile throws', async () => {
+    const file = Buffer.from('any_buffer')
+    const fileStorage = mock<UploadFile>()
+    fileStorage.upload.mockRejectedValueOnce(new Error('upload_error'))
+    const crypto = mock<UUIDGenerator>()
+    const sut = setupChangeProfilePicture(fileStorage, crypto)
+
+    const promise = sut({ userId: 'any_id', file })
+
+    await expect(promise).rejects.toThrow(new Error('upload_error'))
+  })
+
   it('should call UUIDGenerator with correct input', async () => {
     const file = Buffer.from('any_buffer')
     const fileStorage = mock<UploadFile>()
