@@ -1,4 +1,4 @@
-import { TokenValidator } from '@/domain/contracts/crypto'
+import { TokenValidator } from '@/domain/contracts/gateways'
 
 type Setup = (crypto: Readonly<TokenValidator>) => Authorize
 type Input = { token: string }

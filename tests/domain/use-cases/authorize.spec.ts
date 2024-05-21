@@ -1,4 +1,4 @@
-import { TokenValidator } from '@/domain/contracts/crypto'
+import { TokenValidator } from '@/domain/contracts/gateways'
 import { Authorize, setupAuthorize } from '@/domain/use-cases'
 
 import { mock, MockProxy } from 'jest-mock-extended'
