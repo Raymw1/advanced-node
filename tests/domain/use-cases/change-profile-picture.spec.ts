@@ -1,17 +1,28 @@
 import { UUIDGenerator, UploadFile } from '@/domain/contracts/gateways'
-import { setupChangeProfilePicture } from '@/domain/use-cases'
+import { ChangeProfilePicture, setupChangeProfilePicture } from '@/domain/use-cases'
 
-import { mock } from 'jest-mock-extended'
+import { MockProxy, mock } from 'jest-mock-extended'
 
 describe('ChangeProfilePicture', () => {
-  it('should call UploadFile with correct input', async () => {
-    const uuid = 'any_unique_id'
-    const file = Buffer.from('any_buffer')
-    const fileStorage = mock<UploadFile>()
-    const crypto = mock<UUIDGenerator>()
-    crypto.uuid.mockReturnValueOnce(uuid)
-    const sut = setupChangeProfilePicture(fileStorage, crypto)
+  let uuid: string
+  let file: Buffer
+  let fileStorage: MockProxy<UploadFile>
+  let crypto: MockProxy<UUIDGenerator>
+  let sut: ChangeProfilePicture
 
+  beforeAll(() => {
+    uuid = 'any_unique_id'
+    file = Buffer.from('any_buffer')
+    fileStorage = mock<UploadFile>()
+    crypto = mock<UUIDGenerator>()
+    crypto.uuid.mockReturnValue(uuid)
+  })
+
+  beforeEach(() => {
+    sut = setupChangeProfilePicture(fileStorage, crypto)
+  })
+
+  it('should call UploadFile with correct input', async () => {
     await sut({ userId: 'any_id', file })
 
     expect(fileStorage.upload).toHaveBeenCalledTimes(1)
@@ -19,11 +30,7 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('should throw if UploadFile throws', async () => {
-    const file = Buffer.from('any_buffer')
-    const fileStorage = mock<UploadFile>()
     fileStorage.upload.mockRejectedValueOnce(new Error('upload_error'))
-    const crypto = mock<UUIDGenerator>()
-    const sut = setupChangeProfilePicture(fileStorage, crypto)
 
     const promise = sut({ userId: 'any_id', file })
 
@@ -31,11 +38,6 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('should call UUIDGenerator with correct input', async () => {
-    const file = Buffer.from('any_buffer')
-    const fileStorage = mock<UploadFile>()
-    const crypto = mock<UUIDGenerator>()
-    const sut = setupChangeProfilePicture(fileStorage, crypto)
-
     await sut({ userId: 'any_id', file })
 
     expect(crypto.uuid).toHaveBeenCalledTimes(1)
@@ -43,11 +45,7 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('should throw if UUIDGenerator throws', async () => {
-    const file = Buffer.from('any_buffer')
-    const fileStorage = mock<UploadFile>()
-    const crypto = mock<UUIDGenerator>()
     crypto.uuid.mockImplementationOnce(() => { throw new Error('uuid_error') })
-    const sut = setupChangeProfilePicture(fileStorage, crypto)
 
     const promise = sut({ userId: 'any_id', file })
 
