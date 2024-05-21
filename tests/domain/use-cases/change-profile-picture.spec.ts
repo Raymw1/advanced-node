@@ -51,4 +51,10 @@ describe('ChangeProfilePicture', () => {
 
     await expect(promise).rejects.toThrow(new Error('uuid_error'))
   })
+
+  it('should not call UploadFile when file is undefined', async () => {
+    await sut({ userId: 'any_id', file: undefined })
+
+    expect(fileStorage.upload).not.toHaveBeenCalled()
+  })
 })
