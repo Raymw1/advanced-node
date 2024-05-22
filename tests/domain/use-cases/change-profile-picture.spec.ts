@@ -57,4 +57,10 @@ describe('ChangeProfilePicture', () => {
 
     expect(fileStorage.upload).not.toHaveBeenCalled()
   })
+
+  it('should not call UUIDGenerator when file is undefined', async () => {
+    await sut({ userId: 'any_id', file: undefined })
+
+    expect(crypto.uuid).not.toHaveBeenCalled()
+  })
 })
