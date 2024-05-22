@@ -8,7 +8,8 @@ type Setup = (
   userProfileRepository: SaveUserPictureRepository & LoadUserProfileRepository
 ) => ChangeProfilePicture
 type Input = { userId: string, file?: Buffer }
-export type ChangeProfilePicture = (params: Input) => Promise<void>
+type Output = { pictureUrl: string | undefined, initials: string | undefined }
+export type ChangeProfilePicture = (params: Input) => Promise<Output>
 
 export const setupChangeProfilePicture: Setup = (fileStorage, crypto, userProfileRepository) => async ({ userId, file }) => {
   const data: { pictureUrl: string | undefined, name: string | undefined } = { pictureUrl: undefined, name: undefined }
@@ -21,4 +22,5 @@ export const setupChangeProfilePicture: Setup = (fileStorage, crypto, userProfil
   const userProfile = new UserProfile(userId)
   userProfile.setPicture(data)
   await userProfileRepository.savePicture(userProfile)
+  return userProfile
 }
