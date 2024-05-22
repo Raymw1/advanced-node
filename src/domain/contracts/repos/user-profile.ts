@@ -4,6 +4,7 @@ export interface SaveUserPictureRepository {
 
 export namespace SaveUserPictureRepository {
   export type Input = {
+    id: string
     pictureUrl: string | undefined
     initials: string | undefined
   }
