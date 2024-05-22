@@ -84,6 +84,14 @@ describe('ChangeProfilePicture', () => {
     expect(userProfileRepository.savePicture).toHaveBeenCalledWith({ pictureUrl: undefined })
   })
 
+  it('should throw if SaveUserPictureRepository throws', async () => {
+    userProfileRepository.savePicture.mockImplementationOnce(() => { throw new Error('save_error') })
+
+    const promise = sut({ userId: 'any_id', file })
+
+    await expect(promise).rejects.toThrow(new Error('save_error'))
+  })
+
   it('should call LoadUserProfileRepository with correct input', async () => {
     await sut({ userId: 'any_id', file: undefined })
 
