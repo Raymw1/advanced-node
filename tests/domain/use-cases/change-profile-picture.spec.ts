@@ -99,6 +99,14 @@ describe('ChangeProfilePicture', () => {
     expect(userProfileRepository.load).toHaveBeenCalledWith({ id: 'any_id' })
   })
 
+  it('should throw if LoadUserProfileRepository throws', async () => {
+    userProfileRepository.load.mockImplementationOnce(() => { throw new Error('load_error') })
+
+    const promise = sut({ userId: 'any_id', file: undefined })
+
+    await expect(promise).rejects.toThrow(new Error('load_error'))
+  })
+
   it('should not call LoadUserProfileRepository if file exists', async () => {
     await sut({ userId: 'any_id', file })
 
