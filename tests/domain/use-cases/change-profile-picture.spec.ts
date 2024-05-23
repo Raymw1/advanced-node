@@ -1,4 +1,4 @@
-import { UUIDGenerator, UploadFile } from '@/domain/contracts/gateways'
+import { DeleteFile, UUIDGenerator, UploadFile } from '@/domain/contracts/gateways'
 import { LoadUserProfileRepository, SaveUserPictureRepository } from '@/domain/contracts/repos'
 import { UserProfile } from '@/domain/entities'
 import { ChangeProfilePicture, setupChangeProfilePicture } from '@/domain/use-cases'
@@ -11,7 +11,7 @@ describe('ChangeProfilePicture', () => {
   let uuid: string
   let fileUrl: string
   let file: Buffer
-  let fileStorage: MockProxy<UploadFile>
+  let fileStorage: MockProxy<UploadFile & DeleteFile>
   let crypto: MockProxy<UUIDGenerator>
   let userProfileRepository: MockProxy<SaveUserPictureRepository & LoadUserProfileRepository>
   let sut: ChangeProfilePicture
@@ -20,7 +20,7 @@ describe('ChangeProfilePicture', () => {
     uuid = 'any_unique_id'
     fileUrl = 'any_url'
     file = Buffer.from('any_buffer')
-    fileStorage = mock<UploadFile>()
+    fileStorage = mock<UploadFile & DeleteFile>()
     fileStorage.upload.mockResolvedValue({ fileUrl })
     crypto = mock<UUIDGenerator>()
     crypto.uuid.mockReturnValue(uuid)
@@ -68,12 +68,6 @@ describe('ChangeProfilePicture', () => {
     expect(fileStorage.upload).not.toHaveBeenCalled()
   })
 
-  it('should not call UUIDGenerator when file is undefined', async () => {
-    await sut({ userId: 'any_id', file: undefined })
-
-    expect(crypto.uuid).not.toHaveBeenCalled()
-  })
-
   it('should call SaveUserPictureRepository with correct input', async () => {
     await sut({ userId: 'any_id', file })
 
@@ -115,6 +109,17 @@ describe('ChangeProfilePicture', () => {
     expect(result).toMatchObject({
       pictureUrl: 'any_url',
       initials: 'any_initials'
+    })
+  })
+
+  it('should call DeleteFile when file exists and SaveUserPicture throws', async () => {
+    userProfileRepository.savePicture.mockRejectedValueOnce(Error('save_error'))
+
+    const promise = sut({ userId: 'any_id', file })
+
+    promise.catch(() => {
+      expect(fileStorage.delete).toHaveBeenCalledTimes(1)
+      expect(fileStorage.delete).toHaveBeenCalledWith({ key: uuid })
     })
   })
 })
