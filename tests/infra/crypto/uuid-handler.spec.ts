@@ -1,5 +1,6 @@
-import { v4 } from 'uuid'
 import { UUIDHandler } from '@/infra/crypto'
+
+import { v4 } from 'uuid'
 
 jest.mock('uuid')
 
