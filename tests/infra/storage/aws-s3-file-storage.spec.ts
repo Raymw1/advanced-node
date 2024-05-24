@@ -35,7 +35,7 @@ describe('AwsS3FileStorage', () => {
   })
 
   it('should call putObject with correct input', async () => {
-    await sut.upload({ key: 'any_key', file })
+    await sut.upload({ key, file })
 
     expect(putObjectSpy).toHaveBeenCalledTimes(1)
     expect(putObjectSpy).toHaveBeenCalledWith({
@@ -50,8 +50,20 @@ describe('AwsS3FileStorage', () => {
   it('should throw if putObject throws', async () => {
     putObjectPromiseSpy.mockRejectedValueOnce(new Error('put_object_error'))
 
-    const promise = sut.upload({ key: 'any_key', file })
+    const promise = sut.upload({ key, file })
 
     await expect(promise).rejects.toThrow(new Error('put_object_error'))
+  })
+
+  it('should return fileUrl', async () => {
+    const { fileUrl } = await sut.upload({ key, file })
+
+    expect(fileUrl).toBe(`https://${bucket}.s3.amazonaws.com/${key}`)
+  })
+
+  it('should return encoded fileUrl', async () => {
+    const { fileUrl } = await sut.upload({ key: 'any key', file })
+
+    expect(fileUrl).toBe(`https://${bucket}.s3.amazonaws.com/any%20key`)
   })
 })
