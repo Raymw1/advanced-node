@@ -15,6 +15,6 @@ export class AwsS3FileStorage implements UploadFile {
       Body: file,
       ACL: 'public-read'
     }).promise()
-    return { fileUrl: 'invalid_url' }
+    return { fileUrl: `https://${this.bucket}.s3.amazonaws.com/${encodeURIComponent(key)}` }
   }
 }
