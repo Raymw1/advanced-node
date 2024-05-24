@@ -1,6 +1,7 @@
 import { DeleteFile, UUIDGenerator, UploadFile } from '@/domain/contracts/gateways'
 import { LoadUserProfileRepository, SaveUserPictureRepository } from '@/domain/contracts/repos'
 import { UserProfile } from '@/domain/entities'
+import { UserProfileNotFoundError } from '@/domain/errors'
 import { ChangeProfilePicture, setupChangeProfilePicture } from '@/domain/use-cases'
 
 import { MockProxy, mock } from 'jest-mock-extended'
@@ -30,6 +31,21 @@ describe('ChangeProfilePicture', () => {
 
   beforeEach(() => {
     sut = setupChangeProfilePicture(fileStorage, crypto, userProfileRepository)
+  })
+
+  it('should call LoadUserProfileRepository with correct input', async () => {
+    await sut({ userId: 'any_id', file: undefined })
+
+    expect(userProfileRepository.load).toHaveBeenCalledTimes(1)
+    expect(userProfileRepository.load).toHaveBeenCalledWith({ id: 'any_id' })
+  })
+
+  it('should throw UserProfileNotFoundError when LoadUserProfileRepository returns undefined', async () => {
+    userProfileRepository.load.mockResolvedValueOnce(undefined)
+
+    const promise = sut({ userId: 'any_id', file: undefined })
+
+    await expect(promise).rejects.toThrow(new UserProfileNotFoundError())
   })
 
   it('should call UploadFile with correct input', async () => {
@@ -75,25 +91,12 @@ describe('ChangeProfilePicture', () => {
     expect(userProfileRepository.savePicture).toHaveBeenCalledWith(jest.mocked(UserProfile).mock.instances[0])
   })
 
-  it('should call LoadUserProfileRepository with correct input', async () => {
-    await sut({ userId: 'any_id', file: undefined })
-
-    expect(userProfileRepository.load).toHaveBeenCalledTimes(1)
-    expect(userProfileRepository.load).toHaveBeenCalledWith({ id: 'any_id' })
-  })
-
   it('should throw if LoadUserProfileRepository throws', async () => {
     userProfileRepository.load.mockImplementationOnce(() => { throw new Error('load_error') })
 
     const promise = sut({ userId: 'any_id', file: undefined })
 
     await expect(promise).rejects.toThrow(new Error('load_error'))
-  })
-
-  it('should not call LoadUserProfileRepository if file exists', async () => {
-    await sut({ userId: 'any_id', file })
-
-    expect(userProfileRepository.load).not.toHaveBeenCalled()
   })
 
   it('should return correct data on success', async () => {

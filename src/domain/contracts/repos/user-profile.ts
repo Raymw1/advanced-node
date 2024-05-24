@@ -11,10 +11,10 @@ export namespace SaveUserPictureRepository {
 }
 
 export interface LoadUserProfileRepository {
-  load: (params: LoadUserProfileRepository.Input) => Promise<LoadUserProfileRepository.Outuput>
+  load: (params: LoadUserProfileRepository.Input) => Promise<LoadUserProfileRepository.Output>
 }
 
 export namespace LoadUserProfileRepository {
   export type Input = { id: string }
-  export type Outuput = { name?: string }
+  export type Output = { name?: string } | undefined
 }
