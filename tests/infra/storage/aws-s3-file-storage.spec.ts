@@ -46,4 +46,12 @@ describe('AwsS3FileStorage', () => {
     })
     expect(putObjectPromiseSpy).toHaveBeenCalledTimes(1)
   })
+
+  it('should throw if putObject throws', async () => {
+    putObjectPromiseSpy.mockRejectedValueOnce(new Error('put_object_error'))
+
+    const promise = sut.upload({ key: 'any_key', file })
+
+    await expect(promise).rejects.toThrow(new Error('put_object_error'))
+  })
 })
