@@ -15,7 +15,7 @@ describe('SaveProfilePictureController', () => {
     mimeType = 'image/png'
     file = { buffer, mimeType }
     userId = 'any_user_id'
-    changeProfilePicture = jest.fn()
+    changeProfilePicture = jest.fn().mockResolvedValue({ initials: 'any_initials', pictureUrl: 'any_url' })
   })
 
   beforeEach(() => {
@@ -112,6 +112,15 @@ describe('SaveProfilePictureController', () => {
     expect(httpResponse).toEqual({
       statusCode: 404,
       data: error
+    })
+  })
+
+  it('should return 200 with valid data', async () => {
+    const httpResponse = await sut.handle({ userId, file })
+
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      data: { initials: 'any_initials', pictureUrl: 'any_url' }
     })
   })
 })
