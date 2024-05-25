@@ -1,8 +1,13 @@
 import { SaveProfilePictureController } from '@/application/controllers'
-import { RequiredFieldError } from '@/application/errors'
+import { InvalidMimeTypeError, RequiredFieldError } from '@/application/errors'
 
 describe('SaveProfilePictureController', () => {
+  let buffer: Buffer
   let sut: SaveProfilePictureController
+
+  beforeAll(() => {
+    buffer = Buffer.from('any_buffer')
+  })
 
   beforeEach(() => {
     sut = new SaveProfilePictureController()
@@ -32,6 +37,15 @@ describe('SaveProfilePictureController', () => {
     expect(httpResponse).toEqual({
       statusCode: 400,
       data: new RequiredFieldError('file')
+    })
+  })
+
+  it('should return 400 if file type is invalid', async () => {
+    const httpResponse = await sut.handle({ file: { buffer, mimeType: 'invalid_mime_type' } })
+
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+      data: new InvalidMimeTypeError(['png', 'jpeg'])
     })
   })
 })
