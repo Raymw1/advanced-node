@@ -1,11 +1,16 @@
 import { RequiredFieldError } from '@/application/errors'
-import { Validator } from '@/application/validation'
+import { Required } from '@/application/validation'
 
-export class RequiredString implements Validator {
-  constructor (private readonly value: string, private readonly fieldName: string) {}
+export class RequiredString extends Required {
+  constructor (
+    override readonly value: string,
+    override readonly fieldName: string
+  ) {
+    super(value, fieldName)
+  }
 
-  validate (): Error | undefined {
-    if (this.value === '' || this.value === null || this.value === undefined) {
+  override validate (): Error | undefined {
+    if (super.validate() !== undefined || this.value === '') {
       return new RequiredFieldError(this.fieldName)
     }
   }
