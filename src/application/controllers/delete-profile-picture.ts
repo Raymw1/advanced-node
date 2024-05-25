@@ -1,5 +1,6 @@
 import { Controller } from '@/application/controllers'
-import { HttpResponse, noContent } from '@/application/helpers'
+import { HttpResponse, noContent, notFound } from '@/application/helpers'
+import { UserProfileNotFoundError } from '@/domain/errors'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 
 type HttpRequest = { userId: string }
@@ -10,7 +11,12 @@ export class DeleteProfilePictureController extends Controller {
   }
 
   async perform ({ userId }: HttpRequest): Promise<HttpResponse> {
-    await this.changeProfilePicture({ userId })
-    return noContent()
+    try {
+      await this.changeProfilePicture({ userId })
+      return noContent()
+    } catch (error) {
+      if (error instanceof UserProfileNotFoundError) return notFound(error)
+      throw error
+    }
   }
 }

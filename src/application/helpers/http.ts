@@ -30,6 +30,11 @@ export const forbidden = (): HttpResponse<ForbiddenError> => ({
   data: new ForbiddenError()
 })
 
+export const notFound = (error: Error): HttpResponse<Error> => ({
+  statusCode: 404,
+  data: error
+})
+
 export const serverError = (error?: Error): HttpResponse<ServerError> => ({
   statusCode: 500,
   data: new ServerError(error)
