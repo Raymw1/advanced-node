@@ -1,9 +1,13 @@
 import { Controller, DeleteProfilePictureController } from '@/application/controllers'
 
 describe('DeleteProfilePictureController', () => {
-  it('should extend Controller', () => {
-    const sut = new DeleteProfilePictureController()
+  let sut: DeleteProfilePictureController
 
+  beforeEach(() => {
+    sut = new DeleteProfilePictureController()
+  })
+
+  it('should extend Controller', () => {
     expect(sut).toBeInstanceOf(Controller)
   })
 })
