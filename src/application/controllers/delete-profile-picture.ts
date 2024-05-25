@@ -1,8 +1,16 @@
 import { Controller } from '@/application/controllers'
 import { HttpResponse } from '@/application/helpers'
+import { ChangeProfilePicture } from '@/domain/use-cases'
+
+type HttpRequest = { userId: string }
 
 export class DeleteProfilePictureController extends Controller {
-  async perform (httpRequest: any): Promise<HttpResponse> {
+  constructor (private readonly changeProfilePicture: ChangeProfilePicture) {
+    super()
+  }
+
+  async perform ({ userId }: HttpRequest): Promise<HttpResponse> {
+    await this.changeProfilePicture({ userId })
     throw new Error('Method not implemented.')
   }
 }
