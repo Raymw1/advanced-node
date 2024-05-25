@@ -1,5 +1,6 @@
 import { SaveProfilePictureController } from '@/application/controllers'
 import { InvalidMimeTypeError, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
+import { UserProfileNotFoundError } from '@/domain/errors'
 
 describe('SaveProfilePictureController', () => {
   let buffer: Buffer
@@ -100,5 +101,17 @@ describe('SaveProfilePictureController', () => {
 
     expect(changeProfilePicture).toHaveBeenCalledTimes(1)
     expect(changeProfilePicture).toHaveBeenCalledWith({ userId, file: buffer })
+  })
+
+  it('should return 404 if ChangeProfilePicture throws UserProfileNotFoundError', async () => {
+    const error = new UserProfileNotFoundError()
+    changeProfilePicture.mockRejectedValueOnce(error)
+
+    const httpResponse = await sut.handle({ userId, file })
+
+    expect(httpResponse).toEqual({
+      statusCode: 404,
+      data: error
+    })
   })
 })
