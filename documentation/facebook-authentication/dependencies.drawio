@@ -222,7 +222,7 @@
                 <mxCell id="195" value="Controller" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#BD93F9;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
                     <mxGeometry x="204" y="835" width="103" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="197" value="RequiredStringValidator" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#8BE9FD;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
+                <mxCell id="197" value="RequiredString" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#8BE9FD;fillColor=#2E303D;strokeWidth=3;fontColor=#F8F8F2;" parent="1" vertex="1">
                     <mxGeometry x="-62.5" y="1047" width="160" height="60" as="geometry"/>
                 </mxCell>
             </root>
