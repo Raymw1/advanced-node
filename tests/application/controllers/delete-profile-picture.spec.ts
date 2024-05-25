@@ -1,4 +1,5 @@
 import { Controller, DeleteProfilePictureController } from '@/application/controllers'
+import { UserProfileNotFoundError } from '@/domain/errors'
 
 describe('DeleteProfilePictureController', () => {
   let changeProfilePicture: jest.Mock
@@ -21,6 +22,18 @@ describe('DeleteProfilePictureController', () => {
 
     expect(changeProfilePicture).toHaveBeenCalledTimes(1)
     expect(changeProfilePicture).toHaveBeenCalledWith({ userId: 'any_user_id' })
+  })
+
+  it('should return 404 if ChangeProfilePicture throws UserProfileNotFoundError', async () => {
+    const error = new UserProfileNotFoundError()
+    changeProfilePicture.mockRejectedValueOnce(error)
+
+    const httpResponse = await sut.handle({ userId: 'any_user_id' })
+
+    expect(httpResponse).toEqual({
+      statusCode: 404,
+      data: error
+    })
   })
 
   it('should return 204 on success', async () => {
