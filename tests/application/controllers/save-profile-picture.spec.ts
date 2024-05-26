@@ -1,5 +1,5 @@
 import { Controller, SaveProfilePictureController } from '@/application/controllers'
-import { AllowedMimeTypes, MaxFileSize, Required, RequiredBuffer } from '@/application/validation'
+import { AllowedMimeTypes, MaxFileSize, RequiredBuffer } from '@/application/validation'
 import { UserProfileNotFoundError } from '@/domain/errors'
 
 describe('SaveProfilePictureController', () => {
@@ -30,7 +30,6 @@ describe('SaveProfilePictureController', () => {
     const validators = sut.buildValidators({ file, userId })
 
     expect(validators).toEqual([
-      new Required(file, 'file'),
       new RequiredBuffer(buffer, 'file'),
       new AllowedMimeTypes(['png', 'jpg'], mimeType),
       new MaxFileSize(5, buffer)
