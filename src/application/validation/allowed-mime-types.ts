@@ -11,6 +11,15 @@ export class AllowedMimeTypes implements Validator {
   }
 
   validate (): Error | undefined {
+    if (this.isPng() || this.isJpg()) return undefined
     return new InvalidMimeTypeError(this.allowedMimeTypes)
+  }
+
+  private isPng (): boolean {
+    return this.allowedMimeTypes.includes('png') && this.value === 'image/png'
+  }
+
+  private isJpg (): boolean {
+    return this.allowedMimeTypes.includes('jpg') && /image\/jpe?g/.test(this.value)
   }
 }
