@@ -1,5 +1,5 @@
-import { PgUserAccountRepository } from '@/infra/postgres/repos'
+import { PgUserProfileRepository } from '@/infra/postgres/repos'
 
-export const makePgUserAccountRepository = (): PgUserAccountRepository => {
-  return new PgUserAccountRepository()
+export const makePgUserProfileRepository = (): PgUserProfileRepository => {
+  return new PgUserProfileRepository()
 }
