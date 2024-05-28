@@ -33,16 +33,16 @@ describe('User Routes', () => {
       expect(status).toBe(403)
     })
 
-    it('should return 204 on success', async () => {
-      const { id } = await pgUserRepo.save({ email: 'any_email', pictureUrl: 'any_url' })
+    it('should return 200 on success', async () => {
+      const { id } = await pgUserRepo.save({ name: 'Any name', email: 'any_email', pictureUrl: 'any_url' })
       const authorization = sign({ key: id }, env.jwtSecret)
 
       const { status, body } = await request(app)
         .delete('/api/users/picture')
         .set({ authorization })
 
-      expect(status).toBe(204)
-      expect(body).toEqual({})
+      expect(status).toBe(200)
+      expect(body).toEqual({ pictureUrl: undefined, initials: 'AN' })
     })
   })
 })

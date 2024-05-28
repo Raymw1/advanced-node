@@ -4,7 +4,7 @@ import { ValidationBuilder, Validator } from '@/application/validation'
 import { UserProfileNotFoundError } from '@/domain/errors'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 
-type HttpRequest = { userId: string, file: { buffer: Buffer, mimeType: string } }
+type HttpRequest = { userId: string, file?: { buffer: Buffer, mimeType: string } }
 type Model = { pictureUrl: string | undefined, initials: string | undefined } | Error
 
 export class SaveProfilePictureController extends Controller {
@@ -23,6 +23,7 @@ export class SaveProfilePictureController extends Controller {
   }
 
   override buildValidators ({ file }: HttpRequest): Validator[] {
+    if (file === undefined) return []
     return [
       ...ValidationBuilder.of({ value: file, fieldName: 'file' })
         .required()
