@@ -40,7 +40,7 @@ describe('SaveProfilePictureController', () => {
     await sut.handle({ userId, file })
 
     expect(changeProfilePicture).toHaveBeenCalledTimes(1)
-    expect(changeProfilePicture).toHaveBeenCalledWith({ userId, file: buffer })
+    expect(changeProfilePicture).toHaveBeenCalledWith({ userId, file })
   })
 
   it('should return 404 if ChangeProfilePicture throws UserProfileNotFoundError', async () => {

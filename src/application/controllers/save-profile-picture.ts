@@ -14,7 +14,7 @@ export class SaveProfilePictureController extends Controller {
 
   async perform ({ userId, file }: HttpRequest): Promise<HttpResponse<Model>> {
     try {
-      const { initials, pictureUrl } = await this.changeProfilePicture({ userId, file: file.buffer })
+      const { initials, pictureUrl } = await this.changeProfilePicture({ userId, file })
       return ok({ initials, pictureUrl })
     } catch (error) {
       if (error instanceof UserProfileNotFoundError) return notFound(error)
