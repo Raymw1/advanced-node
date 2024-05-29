@@ -19,16 +19,19 @@ describe('MulterAdapter', () => {
 
   beforeAll(() => {
     fakeMulter = multer as jest.Mocked<typeof multer>
-    uploadSpy = jest.fn()
+    uploadSpy = jest.fn().mockImplementation((httpRequest, httpResponse, next) => {
+      httpRequest.file = { buffer: Buffer.from('any_buffer'), mimetype: 'any_type' }
+      next()
+    })
     singleSpy = jest.fn().mockReturnValue(uploadSpy)
     multerSpy = jest.fn().mockImplementation(() => ({ single: singleSpy }))
     jest.mocked(fakeMulter).mockImplementation(multerSpy)
-    httpRequest = getMockReq()
     httpResponse = getMockRes().res
     next = getMockRes().next
   })
 
   beforeEach(() => {
+    httpRequest = getMockReq({ locals: { anyLocals: 'any_locals' } })
     sut = adaptMulter
   })
 
@@ -55,5 +58,27 @@ describe('MulterAdapter', () => {
     expect(httpResponse.status).toHaveBeenCalledWith(500)
     expect(httpResponse.json).toHaveBeenCalledTimes(1)
     expect(httpResponse.json).toHaveBeenCalledWith({ error: new ServerError(error).message })
+  })
+
+  it('should not add file to httpRequest.locals', () => {
+    uploadSpy.mockImplementationOnce((httpRequest, httpResponse, next) => {
+      next()
+    })
+
+    sut(httpRequest, httpResponse, next)
+
+    expect(httpRequest.locals).toEqual({ anyLocals: 'any_locals' })
+  })
+
+  it('should add file to httpRequest.locals', () => {
+    sut(httpRequest, httpResponse, next)
+
+    expect(httpRequest.locals).toEqual({
+      anyLocals: 'any_locals',
+      file: {
+        buffer: Buffer.from('any_buffer'),
+        mimeType: 'any_type'
+      }
+    })
   })
 })
