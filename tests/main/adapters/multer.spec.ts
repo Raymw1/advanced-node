@@ -81,4 +81,11 @@ describe('MulterAdapter', () => {
       }
     })
   })
+
+  it('should call next on success', () => {
+    sut(httpRequest, httpResponse, next)
+
+    expect(next).toHaveBeenCalledTimes(1)
+    expect(next).toHaveBeenCalledWith()
+  })
 })

@@ -1,4 +1,5 @@
 import { ServerError } from '@/application/errors'
+
 import { RequestHandler } from 'express'
 import multer from 'multer'
 
@@ -14,5 +15,6 @@ export const adaptMulter: RequestHandler = (httpRequest, httpResponse, next) => 
         file: { buffer: httpRequest.file.buffer, mimeType: httpRequest.file.mimetype }
       }
     }
+    next()
   })
 }
