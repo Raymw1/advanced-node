@@ -1,3 +1,4 @@
+import { ServerError } from '@/application/errors'
 import { adaptMulter } from '@/main/adapters'
 
 import { getMockReq, getMockRes } from '@jest-mock/express'
@@ -40,5 +41,19 @@ describe('MulterAdapter', () => {
     expect(singleSpy).toHaveBeenCalledWith('picture')
     expect(uploadSpy).toHaveBeenCalledTimes(1)
     expect(uploadSpy).toHaveBeenCalledWith(httpRequest, httpResponse, expect.any(Function))
+  })
+
+  it('should return 500 if upload fails', () => {
+    const error = new Error('multer_error')
+    uploadSpy.mockImplementationOnce((httpRequest, httpResponse, next) => {
+      next(error)
+    })
+
+    sut(httpRequest, httpResponse, next)
+
+    expect(httpResponse.status).toHaveBeenCalledTimes(1)
+    expect(httpResponse.status).toHaveBeenCalledWith(500)
+    expect(httpResponse.json).toHaveBeenCalledTimes(1)
+    expect(httpResponse.json).toHaveBeenCalledWith({ error: new ServerError(error).message })
   })
 })
