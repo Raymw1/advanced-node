@@ -1,4 +1,5 @@
 import { Controller, SaveProfilePictureController } from '@/application/controllers'
+import { ServerError } from '@/application/errors'
 import { AllowedMimeTypes, MaxFileSize, RequiredBuffer } from '@/application/validation'
 import { UserProfileNotFoundError } from '@/domain/errors'
 
@@ -58,6 +59,18 @@ describe('SaveProfilePictureController', () => {
     expect(httpResponse).toEqual({
       statusCode: 404,
       data: error
+    })
+  })
+
+  it('should return 500 if ChangeProfilePicture throws other error', async () => {
+    const error = new Error('infra_error')
+    changeProfilePicture.mockRejectedValueOnce(error)
+
+    const httpResponse = await sut.handle({ userId, file })
+
+    expect(httpResponse).toEqual({
+      statusCode: 500,
+      data: new ServerError(error)
     })
   })
 
