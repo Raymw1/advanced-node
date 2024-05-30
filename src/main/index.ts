@@ -1,15 +1,13 @@
 import './config/module-alias'
 
+import { app } from '@/main/config/app'
 import { env } from '@/main/config/env'
 
 import 'reflect-metadata'
-import { createConnection, getConnectionOptions } from 'typeorm'
+import { createConnection } from 'typeorm'
 
-getConnectionOptions()
-  .then(async (options) => {
-    const root = process.env.TS_NODE_DEV === undefined ? 'dist' : 'src'
-    const entities = [`${root}/infra/postgres/entities/index.{js,ts}`]
-    await createConnection({ ...options, entities });
-    (await import('@/main/config/app')).app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
+createConnection()
+  .then(() => {
+    app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
   })
   .catch(console.error)
