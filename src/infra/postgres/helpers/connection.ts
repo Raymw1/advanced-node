@@ -1,5 +1,12 @@
 import { QueryRunner, createConnection, getConnection, getConnectionManager } from 'typeorm'
 
+export class ConnectionNotFoundError extends Error {
+  constructor () {
+    super('No connection was found')
+    this.name = 'ConnectionNotFoundError'
+  }
+}
+
 export class PgConnection {
   private static instance?: PgConnection
   private query?: QueryRunner
@@ -17,6 +24,7 @@ export class PgConnection {
   }
 
   async disconnect (): Promise<void> {
+    if (this.query === undefined) throw new ConnectionNotFoundError()
     await getConnection().close()
     this.query = undefined
   }
