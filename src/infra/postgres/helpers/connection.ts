@@ -1,11 +1,6 @@
-import { QueryRunner, createConnection, getConnection, getConnectionManager } from 'typeorm'
+import { ConnectionNotFoundError } from '@/infra/postgres/helpers'
 
-export class ConnectionNotFoundError extends Error {
-  constructor () {
-    super('No connection was found')
-    this.name = 'ConnectionNotFoundError'
-  }
-}
+import { QueryRunner, createConnection, getConnection, getConnectionManager } from 'typeorm'
 
 export class PgConnection {
   private static instance?: PgConnection
