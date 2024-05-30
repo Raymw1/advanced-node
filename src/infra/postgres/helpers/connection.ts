@@ -1,4 +1,4 @@
-import { createConnection } from 'typeorm'
+import { createConnection, getConnection, getConnectionManager } from 'typeorm'
 
 export class PgConnection {
   private static instance: PgConnection | undefined
@@ -11,7 +11,7 @@ export class PgConnection {
   }
 
   async connect (): Promise<void> {
-    const connection = await createConnection()
+    const connection = getConnectionManager().has('default') ? getConnection() : await createConnection()
     connection.createQueryRunner()
   }
 }
