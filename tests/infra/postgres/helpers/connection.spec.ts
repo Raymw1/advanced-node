@@ -85,8 +85,16 @@ describe('PgConnection', () => {
   it('should open a transaction', async () => {
     await sut.connect()
     await sut.openTransaction()
+    await sut.disconnect()
 
     expect(startTransactionSpy).toHaveBeenCalledTimes(1)
     expect(startTransactionSpy).toHaveBeenCalledWith()
+  })
+
+  it('should throw ConnectionNotFoundError on openTransaction if no connection exists', async () => {
+    const promise = sut.openTransaction()
+
+    expect(startTransactionSpy).not.toHaveBeenCalled()
+    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
   })
 })
