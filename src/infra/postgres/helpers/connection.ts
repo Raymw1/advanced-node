@@ -23,4 +23,8 @@ export class PgConnection {
     await getConnection().close()
     this.query = undefined
   }
+
+  async openTransaction (): Promise<void> {
+    await this.query?.startTransaction()
+  }
 }
