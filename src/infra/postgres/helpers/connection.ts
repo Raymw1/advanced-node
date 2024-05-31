@@ -40,6 +40,7 @@ export class PgConnection {
   }
 
   async rollback (): Promise<void> {
-    await this.query?.rollbackTransaction()
+    if (this.query === undefined) throw new ConnectionNotFoundError()
+    await this.query.rollbackTransaction()
   }
 }
