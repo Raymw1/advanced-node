@@ -30,6 +30,7 @@ export class PgConnection {
   }
 
   async closeTransaction (): Promise<void> {
-    await this.query?.release()
+    if (this.query === undefined) throw new ConnectionNotFoundError()
+    await this.query.release()
   }
 }
