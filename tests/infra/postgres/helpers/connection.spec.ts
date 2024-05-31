@@ -130,4 +130,11 @@ describe('PgConnection', () => {
     expect(commitTransactionSpy).toHaveBeenCalledTimes(1)
     expect(commitTransactionSpy).toHaveBeenCalledWith()
   })
+
+  it('should throw ConnectionNotFoundError on commit if no connection exists', async () => {
+    const promise = sut.commit()
+
+    expect(commitTransactionSpy).not.toHaveBeenCalled()
+    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+  })
 })
