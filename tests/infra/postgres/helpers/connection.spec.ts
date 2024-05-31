@@ -14,6 +14,7 @@ jest.mock('typeorm', () => ({
 describe('PgConnection', () => {
   let hasSpy: jest.Mock
   let getConnectionManagerSpy: jest.Mock
+  let startTransactionSpy: jest.Mock
   let createQueryRunnerSpy: jest.Mock
   let createConnectionSpy: jest.Mock
   let closeSpy: jest.Mock
@@ -24,7 +25,8 @@ describe('PgConnection', () => {
     hasSpy = jest.fn().mockReturnValue(true)
     getConnectionManagerSpy = jest.fn().mockReturnValue({ has: hasSpy })
     jest.mocked(getConnectionManager).mockImplementation(getConnectionManagerSpy)
-    createQueryRunnerSpy = jest.fn().mockReturnValue({})
+    startTransactionSpy = jest.fn()
+    createQueryRunnerSpy = jest.fn().mockReturnValue({ startTransaction: startTransactionSpy })
     createConnectionSpy = jest.fn().mockResolvedValue({ createQueryRunner: createQueryRunnerSpy })
     jest.mocked(createConnection).mockImplementation(createConnectionSpy)
     closeSpy = jest.fn()
@@ -78,5 +80,13 @@ describe('PgConnection', () => {
 
     expect(closeSpy).not.toHaveBeenCalled()
     await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+  })
+
+  it('should open a transaction', async () => {
+    await sut.connect()
+    await sut.openTransaction()
+
+    expect(startTransactionSpy).toHaveBeenCalledTimes(1)
+    expect(startTransactionSpy).toHaveBeenCalledWith()
   })
 })
