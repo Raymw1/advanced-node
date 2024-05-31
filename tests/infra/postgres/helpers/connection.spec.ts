@@ -149,4 +149,11 @@ describe('PgConnection', () => {
     expect(rollbackTransactionSpy).toHaveBeenCalledTimes(1)
     expect(rollbackTransactionSpy).toHaveBeenCalledWith()
   })
+
+  it('should throw ConnectionNotFoundError on rollback if no connection exists', async () => {
+    const promise = sut.rollback()
+
+    expect(rollbackTransactionSpy).not.toHaveBeenCalled()
+    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+  })
 })
