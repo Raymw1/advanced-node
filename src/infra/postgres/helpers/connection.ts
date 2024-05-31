@@ -25,6 +25,7 @@ export class PgConnection {
   }
 
   async openTransaction (): Promise<void> {
-    await this.query?.startTransaction()
+    if (this.query === undefined) throw new ConnectionNotFoundError()
+    await this.query.startTransaction()
   }
 }
