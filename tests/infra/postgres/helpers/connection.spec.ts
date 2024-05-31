@@ -108,4 +108,11 @@ describe('PgConnection', () => {
     expect(releaseSpy).toHaveBeenCalledTimes(1)
     expect(releaseSpy).toHaveBeenCalledWith()
   })
+
+  it('should throw ConnectionNotFoundError on closeTransaction if no connection exists', async () => {
+    const promise = sut.openTransaction()
+
+    expect(releaseSpy).not.toHaveBeenCalled()
+    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+  })
 })
