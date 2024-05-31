@@ -35,6 +35,7 @@ export class PgConnection {
   }
 
   async commit (): Promise<void> {
-    await this.query?.commitTransaction()
+    if (this.query === undefined) throw new ConnectionNotFoundError()
+    await this.query.commitTransaction()
   }
 }
