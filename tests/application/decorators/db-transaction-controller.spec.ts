@@ -12,6 +12,7 @@ describe('DbTransactionController', () => {
   beforeAll(() => {
     db = mock<DbTransaction>()
     decoratee = mock<Controller>()
+    decoratee.handle.mockResolvedValue({ statusCode: 200, data: { anyData: 'any_data' } })
   })
 
   beforeEach(() => {
@@ -37,6 +38,22 @@ describe('DbTransactionController', () => {
 
     expect(db.commit).toHaveBeenCalledTimes(1)
     expect(db.commit).toHaveBeenCalledWith()
+    expect(db.rollback).not.toHaveBeenCalled()
+    expect(db.closeTransaction).toHaveBeenCalledTimes(1)
+    expect(db.closeTransaction).toHaveBeenCalledWith()
+  })
+
+  it('should call rollback and close transaction on failure', async () => {
+    decoratee.handle.mockResolvedValueOnce({
+      statusCode: 400,
+      data: new Error()
+    })
+
+    await sut.perform({ any: 'any' })
+
+    expect(db.commit).not.toHaveBeenCalled()
+    expect(db.rollback).toHaveBeenCalledTimes(1)
+    expect(db.rollback).toHaveBeenCalledWith()
     expect(db.closeTransaction).toHaveBeenCalledTimes(1)
     expect(db.closeTransaction).toHaveBeenCalledWith()
   })
