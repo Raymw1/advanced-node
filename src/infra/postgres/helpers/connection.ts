@@ -44,7 +44,8 @@ export class PgConnection {
     await this.query.rollbackTransaction()
   }
 
-  getRepository<Entity extends ObjectLiteral> (entity: ObjectType<Entity>): Repository<Entity> | undefined {
-    return this.query?.manager.getRepository(entity)
+  getRepository<Entity extends ObjectLiteral> (entity: ObjectType<Entity>): Repository<Entity> {
+    if (this.query === undefined) throw new ConnectionNotFoundError()
+    return this.query.manager.getRepository(entity)
   }
 }
