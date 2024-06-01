@@ -170,4 +170,9 @@ describe('PgConnection', () => {
     expect(getRepositorySpy).toHaveBeenCalledWith(PgUser)
     expect(repository).toBe('any_repo')
   })
+
+  it('should throw ConnectionNotFoundError on getRepository if no connection exists', async () => {
+    expect(getRepositorySpy).not.toHaveBeenCalled()
+    expect(() => sut.getRepository(PgUser)).toThrow(new ConnectionNotFoundError())
+  })
 })
