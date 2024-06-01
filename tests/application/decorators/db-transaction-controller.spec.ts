@@ -31,4 +31,13 @@ describe('DbTransactionController', () => {
     expect(decoratee.handle).toHaveBeenCalledTimes(1)
     expect(decoratee.handle).toHaveBeenCalledWith({ any: 'any' })
   })
+
+  it('should call commit and close transaction on success', async () => {
+    await sut.perform({ any: 'any' })
+
+    expect(db.commit).toHaveBeenCalledTimes(1)
+    expect(db.commit).toHaveBeenCalledWith()
+    expect(db.closeTransaction).toHaveBeenCalledTimes(1)
+    expect(db.closeTransaction).toHaveBeenCalledWith()
+  })
 })
