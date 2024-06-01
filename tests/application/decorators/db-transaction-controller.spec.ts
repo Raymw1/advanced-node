@@ -57,4 +57,10 @@ describe('DbTransactionController', () => {
     expect(db.closeTransaction).toHaveBeenCalledTimes(1)
     expect(db.closeTransaction).toHaveBeenCalledWith()
   })
+
+  it('should return same result as decoratee', async () => {
+    const httpResponse = await sut.perform({ any: 'any' })
+
+    expect(httpResponse).toEqual({ statusCode: 200, data: { anyData: 'any_data' } })
+  })
 })
