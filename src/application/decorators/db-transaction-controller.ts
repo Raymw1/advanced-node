@@ -10,5 +10,7 @@ export class DbTransactionController {
   async perform (httpRequest: any): Promise<void> {
     await this.db.openTransaction()
     await this.decoratee.handle(httpRequest)
+    await this.db.commit()
+    await this.db.closeTransaction()
   }
 }
