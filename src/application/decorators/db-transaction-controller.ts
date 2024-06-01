@@ -2,11 +2,13 @@ import { DbTransaction } from '@/application/contracts'
 import { Controller } from '@/application/controllers'
 import { HttpResponse } from '@/application/helpers'
 
-export class DbTransactionController {
+export class DbTransactionController extends Controller {
   constructor (
     private readonly decoratee: Controller,
     private readonly db: DbTransaction
-  ) {}
+  ) {
+    super()
+  }
 
   async perform (httpRequest: any): Promise<HttpResponse> {
     await this.db.openTransaction()
